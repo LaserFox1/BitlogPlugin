@@ -42,53 +42,45 @@ public class TestExtractor extends AbstractMojo {
             JSONObject obj = new JSONObject();
             JSONArray jarr = new JSONArray();
             boolean isScenario = false;
+
             for (String s1 : arr) {
                 if (!s1.equals("")) {
-                    if (!isScenario) {
-                        String[] s2 = s1.trim().split(":\\s+");
-                        if (s2.length > 1) {
-                            switch (s2[0]) {
-                                case "Feature" -> obj.put("FeatureName", s2[1]);
-                                case "Scenario" -> {
-                                    obj.put("ScenarioName", s2[1]);
-                                    isScenario = true;
-                                }
+                    String[] s2 = s1.trim().split(":\\s+");
+                    if (s2.length > 1) {
+                        switch (s2[0]) {
+                            case "Feature" -> obj.put("FeatureName", s2[1]);
+                            case "Scenario" -> {
+                                JSONObject scenObj = new JSONObject();
+                                scenObj.put("Scenario", s2[1]);
+
+                                ArrayList<String> scenArr = new ArrayList<>();
+                                int temp = arr.indexOf(s1);
+                                scenArr.add(arr.get(temp + 1));
+                                scenArr.add(arr.get(temp + 2));
+                                scenArr.add(arr.get(temp + 3));
+
+                                scenObj.put("Syntax", makeObject(scenArr));
+                                jarr.add(scenObj);
                             }
                         }
-                        else{
-                            s2 = s1.split("\\s+");
-                            String s3 = "";
-                            for(int i = 1; i < s2.length; i++){
-                                s3 = s3.concat(s2[i]);
-                                if((i+1<s2.length)){
-                                    s3 = s3.concat(" ");
-                                }
-                            }
-                            obj.put("Description", s3);
-                        }
-                    }
-                    else{
-                        String[] s2 = s1.trim().split("\\s+");
+                    } else {
+                        s2 = s1.split("\\s+");
                         String s3 = "";
-                        for(int i = 1; i < s2.length; i++){
+                        for (int i = 1; i < s2.length; i++) {
                             s3 = s3.concat(s2[i]);
-                            if((i+1<s2.length)){
+                            if ((i + 1 < s2.length)) {
                                 s3 = s3.concat(" ");
                             }
                         }
-                        switch (s2[0]) {
-                            case "Given" -> jarr.add("Given: " + s3);
-                            case "When" -> jarr.add("When: " + s3);
-                            case "Then" -> jarr.add("Then: " + s3);
-                        }
+                        obj.put("Description", s3);
                     }
                 }
             }
-            obj.put("Syntax", jarr);
+            obj.put("Scenarios", jarr);
 
-            topJarr.add(obj.toJSONString());
+            topJarr.add(obj);
         }
-        topObj.put("Features: ", topJarr);
+        topObj.put("Features", topJarr);
         Writer.write(topObj.toJSONString());
     }
 
@@ -105,5 +97,26 @@ public class TestExtractor extends AbstractMojo {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static JSONObject makeObject(ArrayList<String> arr){
+        JSONObject obj = new JSONObject();
+
+        for(String s1 : arr){
+            String[] s2 = s1.trim().split("\\s+");
+            String s3 = "";
+            for (int i = 1; i < s2.length; i++) {
+                s3 = s3.concat(s2[i]);
+                if ((i + 1 < s2.length)) {
+                    s3 = s3.concat(" ");
+                }
+            }
+            switch (s2[0]){
+                case "Given" -> obj.put("Given", s3);
+                case "When" -> obj.put("When", s3);
+                case "Then" -> obj.put("Then", s3);
+             }
+        }
+        return obj;
     }
 }
