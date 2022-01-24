@@ -1,11 +1,9 @@
 package tools;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
-public class Reader{
+public class Reader {
     public static ArrayList<String> read(String input) {
         ArrayList<String> arr = new ArrayList<String>();
         try {
@@ -18,4 +16,6 @@ public class Reader{
         }
         return arr;
     }
+
+
 }
