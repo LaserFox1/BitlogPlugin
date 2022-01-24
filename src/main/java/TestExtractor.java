@@ -7,14 +7,10 @@ import org.apache.maven.shared.model.fileset.FileSet;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import tools.*;
 import tools.Reader;
-import tools.Writer;
-
-import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Mojo(name = "test-extractor", defaultPhase = LifecyclePhase.COMPILE)
 public class TestExtractor extends AbstractMojo {
@@ -31,65 +27,56 @@ public class TestExtractor extends AbstractMojo {
 
         FileSetManager fileSetManager = new FileSetManager();
         String[] includedFiles = fileSetManager.getIncludedFiles(fileset);
-        resetFile();
-        JSONObject topObj = new JSONObject();
-        JSONArray topJarr = new JSONArray();
+        ToolBox.resetFile("output.json");
+        JSONObject obj = new JSONObject();
+        JSONArray arr = new JSONArray();
         for (String s : includedFiles) {
+            arr.add(buildFeature(s).JSONize());
+        }
+        obj.put("Features", arr);
+        Writer.write(obj.toJSONString());
+    }
 
-            int phase = 0;
-            String phaseIdent = "Feature";
-            List<Object> arr = Reader.read("src/test/resources/features/" + s);
-            JSONObject obj = new JSONObject();
-            JSONArray jarr = new JSONArray();
 
-            Integer[] scenarios = filter(arr, "Scenario");
-            Integer[] givens = filter(arr, "Given");
-            Integer[] whens = filter(arr, "When");
-            Integer[] thens = filter(arr, "Then");
-            boolean isDesc = false;
-            for (int i = 0; i < arr.size(); i++) {
-                if(i > scenarios[0]){
-                    if(!isDesc){
-                        if(arr.get(i).equals('\n')){
-                            isDesc = true;
-                        }
-                    }
+
+    private Scenario buildScenario(List<String> arr){
+        return new Scenario(
+                ToolBox.concat(arr.get(0), "Scenario:"),
+                ToolBox.concat(arr.get(1)),
+                ToolBox.concat(arr.get(2)),
+                ToolBox.concat(arr.get(3))
+        );
+    }
+
+    private Feature buildFeature(String s){
+
+        List<String> arr = Reader.read("src/test/resources/features/" + s);
+
+        List<Scenario> scenarios = new ArrayList<>();
+        String featureName = "";
+        StringBuilder description = new StringBuilder();
+        boolean isDescription = false;
+
+        for(String line : arr){
+            List<String> tokens = ToolBox.tokenize(line);
+            String keyword = tokens.get(0);
+            if(isDescription){
+                if(line.isBlank()||line.isEmpty()){
+                    break;
+                }
+                description.append(ToolBox.concat(line));
+            }
+            switch (keyword){
+                case "Feature:" -> {
+                    featureName = ToolBox.concat(line, "Feature:");
+                    isDescription = true;
+                }
+                case "Scenario:" -> {
+                    scenarios.add(buildScenario(arr.subList(arr.indexOf(line), arr.indexOf(line)+4)));
+                    isDescription = false;
                 }
             }
-            System.out.println(obj.toJSONString());
-
-
         }
-
-
-        /*topJarr.add(obj.toJSONString());
-    }
-        topObj.put("Features: ",topJarr);
-        Writer.write(topObj.toJSONString());*/
-    }
-
-    private static void resetFile() {
-        File myObj = new File("output.json");
-        try {
-            if (!myObj.createNewFile()) {
-                FileWriter fwOb = new FileWriter("output.json", false);
-                PrintWriter pwOb = new PrintWriter(fwOb, false);
-                pwOb.flush();
-                pwOb.close();
-                fwOb.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    private static Integer[] filter(List<Object> arr, String keyword) {
-        List<Integer> tempList = new ArrayList<Integer>();
-        for (int i = 0; i < arr.size(); i++) {
-            if (arr.get(i).equals(keyword))
-                tempList.add(i);
-        }
-        return tempList.toArray(Integer[]::new);
+        return new Feature(featureName, description.toString(), scenarios);
     }
 }

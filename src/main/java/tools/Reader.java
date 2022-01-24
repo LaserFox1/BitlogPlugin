@@ -4,38 +4,18 @@ import java.io.*;
 import java.util.*;
 
 public class Reader {
-    public static List<Object> read(String input) {
-        List<Object> arr = new ArrayList<Object>();
+    public static ArrayList<String> read(String input) {
+        ArrayList<String> arr = new ArrayList<String>();
         try {
-
-            arr = tokenize(new FileReader(input));
+            Scanner s1 = new Scanner(new File(input));
+            while (s1.hasNext()) {
+                arr.add((s1.nextLine()));
+            }
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         }
         return arr;
     }
 
-    public static List<Object> tokenize(FileReader fileReader) {
-        StreamTokenizer streamTokenizer = new StreamTokenizer(fileReader);
-        streamTokenizer.eolIsSignificant(true);
-        List<Object> tokens = new ArrayList<Object>();
 
-        try {
-            int currentToken = streamTokenizer.nextToken();
-
-            while (currentToken != StreamTokenizer.TT_EOF) {
-
-                Object o = (streamTokenizer.ttype == StreamTokenizer.TT_NUMBER) ?
-                        streamTokenizer.nval
-                        : streamTokenizer.ttype == StreamTokenizer.TT_WORD ?
-                        streamTokenizer.sval :  (char) currentToken;
-
-                tokens.add(o);
-                currentToken = streamTokenizer.nextToken();
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return tokens;
-    }
 }
