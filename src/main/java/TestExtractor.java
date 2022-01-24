@@ -14,6 +14,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Mojo(name = "test-extractor", defaultPhase = LifecyclePhase.COMPILE)
 public class TestExtractor extends AbstractMojo {
@@ -41,23 +42,19 @@ public class TestExtractor extends AbstractMojo {
             JSONObject obj = new JSONObject();
             JSONArray jarr = new JSONArray();
 
-            for (Object token : arr) {
-                String str = "";
-                JSONArray strucjarr = new JSONArray();
-
-                if (token.equals("Scenario") || token.equals("Given") || token.equals("When") || token.equals("Then")) {
-                    phase++;
-                    phaseIdent = token.toString();
-                } else if (phase > 1 && token.equals("\\n") && str.length() > 1) {
-                    JSONObject strucObj = new JSONObject();
-                    strucObj.put(phaseIdent, str);
-                    str = "";
-                    strucjarr.add(strucObj.toJSONString());
-                } else {
-                    str = str.concat(token.toString());
+            Integer[] scenarios = filter(arr, "Scenario");
+            Integer[] givens = filter(arr, "Given");
+            Integer[] whens = filter(arr, "When");
+            Integer[] thens = filter(arr, "Then");
+            boolean isDesc = false;
+            for (int i = 0; i < arr.size(); i++) {
+                if(i > scenarios[0]){
+                    if(!isDesc){
+                        if(arr.get(i).equals('\n')){
+                            isDesc = true;
+                        }
+                    }
                 }
-
-                obj.put("Syntax", strucjarr);
             }
             System.out.println(obj.toJSONString());
 
@@ -84,5 +81,15 @@ public class TestExtractor extends AbstractMojo {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+    }
+
+    private static Integer[] filter(List<Object> arr, String keyword) {
+        List<Integer> tempList = new ArrayList<Integer>();
+        for (int i = 0; i < arr.size(); i++) {
+            if (arr.get(i).equals(keyword))
+                tempList.add(i);
+        }
+        return tempList.toArray(Integer[]::new);
     }
 }
