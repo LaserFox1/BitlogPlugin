@@ -48,23 +48,23 @@ public class ToolBox {
 
 
     public static String concat(String input, String excluded) {
-        String s = "";
+        StringBuilder s = new StringBuilder();
 
         List<String> arr = ToolBox.tokenize(input);
         for (String s1 : arr) {
             if(!s1.equals(excluded))
-                s = s.concat(s1);
+                s.append(s1).append(" ");
         }
-        return s;
+        return s.toString();
     }
     public static String concat(String input) {
-        String s = "";
+        StringBuilder s = new StringBuilder();
 
         List<String> arr = ToolBox.tokenize(input);
         for (String s1 : arr) {
-            s = s.concat(s1);
+            s.append(s1).append(" ");
         }
-        return s;
+        return s.toString();
     }
 
 }

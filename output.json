@@ -1,0 +1,44 @@
+{
+  "Features": [
+    {
+      "Description": "This method does XYZ ",
+      "Scenarios": [
+        {
+          "Syntax": [
+            {
+              "Given": "Given there are feature files "
+            },
+            {
+              "When": "When I execute "
+            },
+            {
+              "Then": "Then They should be converted "
+            }
+          ],
+          "Scenario": "This method does XYZ111 "
+        }
+      ],
+      "Feature": "Does this work? "
+    },
+    {
+      "Description": "This method does XYZ ",
+      "Scenarios": [
+        {
+          "Syntax": [
+            {
+              "Given": "Given there are feature files "
+            },
+            {
+              "When": "When I execute "
+            },
+            {
+              "Then": "Then They should be converted "
+            }
+          ],
+          "Scenario": "This method does XYZ222 "
+        }
+      ],
+      "Feature": "Does this work? "
+    }
+  ]
+}

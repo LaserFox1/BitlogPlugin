@@ -1,4 +1,4 @@
-package tools;
+package classes;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -51,10 +51,21 @@ public class Scenario {
     public JSONObject JSONize(){
         JSONObject obj = new JSONObject();
         JSONArray arr = new JSONArray();
+
         obj.put("Scenario", scenarioName);
-        arr.add(given);
-        arr.add(when);
-        arr.add(then);
+
+        JSONObject givenObj = new JSONObject();
+        givenObj.put("Given", given);
+        arr.add(givenObj);
+
+        JSONObject whenObj = new JSONObject();
+        whenObj.put("When", when);
+        arr.add(whenObj);
+
+        JSONObject thenObj = new JSONObject();
+        thenObj.put("Then", then);
+        arr.add(thenObj);
+
         obj.put("Syntax", arr);
         return obj;
     }

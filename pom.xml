@@ -61,17 +61,7 @@
                 <artifactId>bitlog-plugin</artifactId>
                 <version>1.0.0-SNAPSHOT</version>
                 <configuration>
-                    <filesets>
-                        <fileset>
-                            <directory>src/test/resources/features</directory>
-                            <includes>
-                                <include>*.feature</include>
-                            </includes>
-                            <followSymlinks>false</followSymlinks>
-                        </fileset>
-                    </filesets>
-
-                    <!-- Given fileset -->
+                                        <!-- Given fileset -->
                     <fileset>
                         <directory>src/test/resources/features</directory>
                         <includes>

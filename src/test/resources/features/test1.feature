@@ -6,8 +6,3 @@ Feature: Does this work?
     Given there are feature files
     When I execute
     Then They should be converted
-
-  Scenario: This method does XYZ111
-    Given there are feature files
-    When I execute
-    Then They should be converted
