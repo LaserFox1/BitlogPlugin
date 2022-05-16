@@ -1,1 +1,78 @@
-{"Features":[{"Description":"This method does XYZ ","Scenarios":[{"Syntax":[{"Given":"Given there are feature files "},{"When":"When I execute "},{"Then":"Then They should be converted "}],"Scenario":"This method does XYZ111 "},{"Syntax":[{"Given":"Given there are feature filesgg "},{"When":"When I executegg "},{"Then":"Then They should be convertedgg "}],"Scenario":"This method does XYZ122 "}],"Feature":"Does this work? "},{"Description":"This method does XYZ ","Scenarios":[{"Syntax":[{"Given":"Given there are feature files "},{"When":"When I execute "},{"Then":"Then They should be converted "}],"Scenario":"This method does XYZ222 "}],"Feature":"Does this work? "}]}
+{
+  "Features": [
+    {
+      "Description": "This feature tests the correct extraction of feature files ",
+      "Scenarios": [
+        {
+          "Syntax": [
+            {
+              "Given": "Given there are 3 feature files in the test\/resources\/features directory "
+            },
+            {
+              "When": "When I execute the plugin "
+            },
+            {
+              "Then": "Then they should be included in the execution "
+            }
+          ],
+          "Scenario": "Feature files are used in plugin execution "
+        },
+        {
+          "Syntax": [
+            {
+              "Given": "Given 3 feature files are included in the plugin execution "
+            },
+            {
+              "When": "When I execute the plugin "
+            },
+            {
+              "Then": "Then they should be converted into JSON-Format and printed into a file "
+            }
+          ],
+          "Scenario": "A Project has several features "
+        }
+      ],
+      "Feature": "Test Extraction "
+    },
+    {
+      "Description": "This method does XYZ ",
+      "Scenarios": [
+        {
+          "Syntax": [
+            {
+              "Given": "Given there are feature files "
+            },
+            {
+              "When": "When I execute "
+            },
+            {
+              "Then": "Then They should be converted "
+            }
+          ],
+          "Scenario": "This method does XYZ "
+        }
+      ],
+      "Feature": "Does this work? "
+    },
+    {
+      "Description": "This is not a working feature, this is promotional material. Please download bitlog! ",
+      "Scenarios": [
+        {
+          "Syntax": [
+            {
+              "Given": "Given you have a project that is hard to read "
+            },
+            {
+              "When": "When you use Bitlog "
+            },
+            {
+              "Then": "Then your customers are 70% more likely to understand what your project is about "
+            }
+          ],
+          "Scenario": "This method does XYZ "
+        }
+      ],
+      "Feature": "Bitlog Promotion "
+    }
+  ]
+}
