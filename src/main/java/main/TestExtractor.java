@@ -17,6 +17,7 @@ import tools.Writer;
 
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 
 @Mojo(name = "test-extractor", defaultPhase = LifecyclePhase.COMPILE)
@@ -26,6 +27,9 @@ public class TestExtractor extends AbstractMojo {
 
     @Parameter
     private FileSet fileset;
+
+    @Parameter(defaultValue = "http://127.0.0.1")
+    private String httpTargetURI;
 
     public void execute() throws MojoExecutionException, MojoFailureException {
 
@@ -54,7 +58,7 @@ public class TestExtractor extends AbstractMojo {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        Writer.write(obj.toJSONString());
+        HTTPPost.post(obj, httpTargetURI);
     }
 }
 
