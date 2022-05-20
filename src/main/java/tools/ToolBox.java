@@ -19,22 +19,6 @@ public class ToolBox {
         return arr;
     }
 
-    public static void resetFile(String filename) {
-        File myObj = new File(filename);
-        try {
-            if (!myObj.createNewFile()) {
-                FileWriter fwOb = new FileWriter(filename, false);
-                PrintWriter pwOb = new PrintWriter(fwOb, false);
-                pwOb.flush();
-                pwOb.close();
-                fwOb.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
     public static String concat(String input, String excluded) {
         StringBuilder s = new StringBuilder();
 
