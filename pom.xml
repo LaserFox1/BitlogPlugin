@@ -85,15 +85,6 @@
                 <groupId>com.ind</groupId>
                 <artifactId>bitlog-plugin</artifactId>
                 <version>1.0.0-SNAPSHOT</version>
-                <configuration>
-                    <fileset>
-                        <directory>src/test/resources/features</directory>
-                        <includes>
-                            <include>*.feature</include>
-                        </includes>
-                        <followSymlinks>false</followSymlinks>
-                    </fileset>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

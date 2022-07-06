@@ -12,10 +12,12 @@ import org.apache.maven.shared.model.fileset.util.FileSetManager;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import tools.ObjectBuilder;
+import tools.ToolBox;
+
+import static tools.ToolBox.defaultSet;
 
 @Mojo(name = "test-extractor", defaultPhase = LifecyclePhase.COMPILE)
 public class TestExtractor extends AbstractMojo {
-
     @Parameter(defaultValue = "${project}", required = true, readonly = true)
     MavenProject project;
 
@@ -29,7 +31,7 @@ public class TestExtractor extends AbstractMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
 
         FileSetManager fileSetManager = new FileSetManager();
-        String[] includedFiles = fileSetManager.getIncludedFiles(fileset);
+        String[] includedFiles = fileSetManager.getIncludedFiles(fileset != null ? fileset : defaultSet());
 
         JSONObject obj = new JSONObject();
         JSONArray arr = new JSONArray();
